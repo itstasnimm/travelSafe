@@ -1,10 +1,10 @@
-# Use OpenJDK 17 as the base image
-FROM openjdk:17-jdk-slim
+# Use Eclipse Temurin OpenJDK 17 as the base image
+FROM eclipse-temurin:17-jdk
 
 # Set working directory
 WORKDIR /app
 
-# Copy the Maven wrapper and pom.xml
+# Copy Maven wrapper and pom.xml
 COPY mvnw .
 COPY .mvn .mvn
 COPY pom.xml .
@@ -12,11 +12,11 @@ COPY pom.xml .
 # Download dependencies
 RUN ./mvnw dependency:go-offline -B
 
-# Copy the source code
+# Copy source code
 COPY src ./src
 
 # Build the application
 RUN ./mvnw clean package -DskipTests
 
-# Run the JAR file
+# Run the built JAR
 CMD ["java", "-jar", "target/womensafety-0.0.1-SNAPSHOT.jar"]
