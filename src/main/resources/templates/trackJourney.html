@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Journey Tracking</title>
+</head>
+<body>
+  <h2>Journey Tracking</h2>
+
+  <ul>
+    <li th:each="cp : ${journey.checkpointList}"
+        th:data-id="${cp.id}"
+        th:data-lat="${cp.latitude}"
+        th:data-lng="${cp.longitude}">
+      <span th:text="${cp.name}"></span> -
+      <span class="status" th:text="${cp.reached} ? 'Reached ✅' : 'Not Reached ❌'"></span>
+    </li>
+  </ul>
+
+  <!-- make trackId available for JS -->
+  <script th:inline="javascript">
+    /*<![CDATA[*/
+    window.trackId = /*[[${journey.trackId}]]*/ "";
+    /*]]>*/
+  </script>
+
+  <!-- external JS handles polling + updates -->
+  <script src="/js/tracking.js"></script>
+</body>
+</html>

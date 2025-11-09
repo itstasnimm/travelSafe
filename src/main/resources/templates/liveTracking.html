@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Live Tracking</title>
+</head>
+<body>
+  <h2>Live Journey Tracking</h2>
+
+  <p>Share this link with trusted contacts:</p>
+  <p>
+    <a th:href="@{|/journey/track/${journey.trackId}|}">
+      /journey/track/<span th:text="${journey.trackId}"></span>
+    </a>
+  </p>
+
+  <p>Your location will be updated every 3 minutes.</p>
+
+  <!-- inject trackId for JS -->
+  <script th:inline="javascript">
+    /*<![CDATA[*/
+    window.trackId = /*[[${journey.trackId}]]*/ "";
+    /*]]>*/
+  </script>
+
+  <button id="findSafePlace">Find Nearest Safe Place</button>
+  <div id="safePlaceResults"></div>
+
+  <!-- traveller’s auto-update script -->
+  <script src="/js/user_data.js"></script>
+</body>
+</html>

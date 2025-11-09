@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Create Journey</title>
+  <script src="/js/maps.js"></script>
+</head>
+<body>
+  <h2>Create Journey</h2>
+  <form method="post" action="/journey/create">
+    <div>
+      <label>Source:</label>
+      <input type="text" id="source" name="source" placeholder="Place name OR lat,lng"/>
+      <button type="button" onclick="useCurrentLocationToField('source')">Use Current Location</button>
+    </div>
+    <br/>
+
+    <div>
+      <label>Destination:</label>
+      <input type="text" id="destination" name="destination" placeholder="Place name OR lat,lng"/>
+      <button type="button" onclick="useCurrentLocationToField('destination')">Use Current Location</button>
+    </div>
+    <br/>
+
+    <div>
+      <label>Checkpoints (comma separated):</label>
+      <input type="text" id="checkpoints" name="checkpoints" placeholder="e.g. Cafe@12.97,77.59, Station, Office Gate@12.98,77.60"/>
+      <button type="button" onclick="appendCurrentLocationToCheckpoints()">Add Current Location as Checkpoint</button>
+    </div>
+    <br/>
+
+    <button type="submit">Save Journey</button>
+  </form>
+</body>
+</html>
