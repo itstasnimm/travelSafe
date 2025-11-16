@@ -27,34 +27,39 @@
 document.addEventListener("DOMContentLoaded", function () {
   const trackId = window.trackId;
 
-  function sendToServer(lat, lng) {
+  function sendPositionToServer(pos) {
     const params = new URLSearchParams();
-    params.append("latitude", lat);
-    params.append("longitude", lng);
+    params.append("latitude", pos.coords.latitude);
+    params.append("longitude", pos.coords.longitude);
+
+    console.log("Sending updated location ->", pos.coords.latitude, pos.coords.longitude);
 
     fetch(`/journey/track/${trackId}/update-location`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: params.toString()
-    }).catch(err => console.error("Failed to send location:", err));
+    })
+    .then(r => r.text())
+    .then(t => console.log("Server response:", t))
+    .catch(err => console.error("Failed sending:", err));
   }
 
-  // REAL-TIME TRACKING
-  navigator.geolocation.watchPosition(
-    pos => {
-      const lat = pos.coords.latitude;
-      const lng = pos.coords.longitude;
-      console.log("Live update:", lat, lng);
-      sendToServer(lat, lng);
-    },
-    err => console.error(err),
-    {
-      enableHighAccuracy: true,
-      maximumAge: 0,
-      timeout: 10000
-    }
-  );
+  function onError(err) {
+    console.error("GEO ERROR =", err);
+  }
+
+  // HIGH ACCURACY + NO CACHE + LONG TIMEOUT
+  const options = {
+    enableHighAccuracy: true,
+    maximumAge: 0,
+    timeout: 20000  // 20 seconds
+  };
+
+  // Continuous location tracking
+  navigator.geolocation.watchPosition(sendPositionToServer, onError, options);
+
 });
+
 
 
   
