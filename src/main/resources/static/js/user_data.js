@@ -23,52 +23,39 @@
 
 //   });
 
+
 document.addEventListener("DOMContentLoaded", function () {
-    const trackId = window.trackId;
+  const trackId = window.trackId;
 
-    if (!trackId) {
-        console.error("trackId is undefined! Check Thymeleaf injection.");
-        return;
+  function sendToServer(lat, lng) {
+    const params = new URLSearchParams();
+    params.append("latitude", lat);
+    params.append("longitude", lng);
+
+    fetch(`/journey/track/${trackId}/update-location`, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: params.toString()
+    }).catch(err => console.error("Failed to send location:", err));
+  }
+
+  // REAL-TIME TRACKING
+  navigator.geolocation.watchPosition(
+    pos => {
+      const lat = pos.coords.latitude;
+      const lng = pos.coords.longitude;
+      console.log("Live update:", lat, lng);
+      sendToServer(lat, lng);
+    },
+    err => console.error(err),
+    {
+      enableHighAccuracy: true,
+      maximumAge: 0,
+      timeout: 10000
     }
-
-    function sendLocation() {
-        if (!navigator.geolocation) {
-            console.error("Geolocation not supported by this browser.");
-            return;
-        }
-
-        navigator.geolocation.getCurrentPosition(
-            pos => {
-                const latitude = pos.coords.latitude;
-                const longitude = pos.coords.longitude;
-
-                console.log(`Sending location -> lat: ${latitude}, lng: ${longitude}`);
-
-                const params = new URLSearchParams();
-                params.append("latitude", latitude);
-                params.append("longitude", longitude);
-
-                fetch(`/journey/track/${trackId}/update-location`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: params.toString()
-                })
-                .then(res => res.text())
-                .then(text => console.log(`Server response: ${text}`))
-                .catch(err => console.error("Failed to send location:", err));
-            },
-            err => {
-                console.error("Error getting geolocation:", err);
-            },
-            { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-        );
-    }
-
-    // Run immediately
-    sendLocation();
-    // Repeat every 3 minutes
-    setInterval(sendLocation, 300000);
+  );
 });
+
 
   
 document.getElementById("findSafePlace").addEventListener("click", () => {
