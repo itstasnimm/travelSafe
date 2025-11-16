@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
           if (statusEl.textContent.includes("Reached")) return; // skip if already reached
 
           var dist = distanceInMeters(userLat, userLng, cp.lat, cp.lng);
-          if (dist < 100) {
+          if (dist < 900) {
             statusEl.textContent = "Reached ✅";
           }
         });

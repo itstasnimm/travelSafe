@@ -20,8 +20,12 @@ public class Journey {
     private String trackId;
 
     // Last known location of the user (who is being tracked)
+    @Column(name = "current_latitude")
     private Double currentLatitude;
+
+    @Column(name = "current_longitude")
     private Double currentLongitude;
+
 
      @OneToMany(mappedBy = "journey", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Checkpoint> checkpoints = new ArrayList<>();
