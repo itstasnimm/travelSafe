@@ -33,7 +33,9 @@ document.addEventListener("DOMContentLoaded", function () {
         // check checkpoints
         checkpoints.forEach(cp => {
           var statusEl = cp.el.querySelector(".status");
-          if (statusEl.textContent.includes("Reached")) return; // skip if already reached
+
+          // skip if already reached
+          if (statusEl.textContent.trim() === "Reached ✅") return; 
 
           var dist = distanceInMeters(userLat, userLng, cp.lat, cp.lng);
           if (dist < 900) {
