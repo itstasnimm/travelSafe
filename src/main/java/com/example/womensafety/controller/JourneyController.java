@@ -3,11 +3,13 @@ package com.example.womensafety.controller;
 import com.example.womensafety.service.JourneyService;
 import com.example.womensafety.entity.SafePlace;
 import com.example.womensafety.entity.Journey;
+import com.example.womensafety.entity.Checkpoint;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Controller
 @RequestMapping("/journey")
@@ -25,6 +29,7 @@ public class JourneyController{
 
     private final JourneyService journeyService;
 
+    @Autowired
     public JourneyController(JourneyService journeyService) {
         this.journeyService = journeyService;
     }
@@ -91,4 +96,12 @@ public class JourneyController{
         }
     }
     
+    @PutMapping("/track/{trackId}/updateDbCp")
+    public void updateCheckpoit(@PathVariable("trackId") String tId,@RequestParam("id") Long cp){
+        try {
+            List<Checkpoint> allcps = journeyService.getAllCheckpoint(tId,cp);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

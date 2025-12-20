@@ -4,11 +4,13 @@ import com.example.womensafety.entity.Journey;
 import com.example.womensafety.entity.SafePlace;
 import com.example.womensafety.entity.Checkpoint;
 import com.example.womensafety.repository.JourneyRepository;
+import com.example.womensafety.repository.CheckpointRepository;
 
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 // import com.fasterxml.jackson.databind.JsonNode;
@@ -19,10 +21,18 @@ public class JourneyService {
 
     private final JourneyRepository journeyRepository;
     private final RestTemplate restTemplate;
+    private final CheckpointRepository checkpointRepository;
     
     // Constructor injection for repository
-    public JourneyService(JourneyRepository journeyRepository) {
-        this.journeyRepository = journeyRepository;
+    // public JourneyService(JourneyRepository journeyRepository) {
+    //     this.journeyRepository = journeyRepository;
+    //     this.restTemplate = new RestTemplate();
+    // }
+
+    @Autowired
+    public JourneyService(CheckpointRepository checkpointRepository,JourneyRepository journeyRepository){
+        this.checkpointRepository=checkpointRepository;
+        this.journeyRepository=journeyRepository;
         this.restTemplate = new RestTemplate();
     }
 
@@ -177,4 +187,17 @@ public class JourneyService {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return Math.round(R * c * 100.0) / 100.0; // 2 decimal km
     }
+
+    public List<Checkpoint> getAllCheckpoint(String tId, Long cid) {
+        Journey j = journeyRepository.findByTrackId(tId);
+        List<Checkpoint> allcp= checkpointRepository.findByJourney(j);
+        for(Checkpoint cp : allcp){
+            if(cp.getId().equals(cid)){
+                cp.setReached(true);
+                checkpointRepository.save(cp);
+            }
+        }
+        return allcp;
+    }
+
 }

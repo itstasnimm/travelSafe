@@ -38,9 +38,13 @@ document.addEventListener("DOMContentLoaded", function () {
           if (statusEl.textContent.trim() === "Reached ✅") return; 
 
           var dist = distanceInMeters(userLat, userLng, cp.lat, cp.lng);
-          if (dist < 900) {
+          if (dist < 300) {
             statusEl.textContent = "Reached ✅";
+            fetch(`/journey/track/${trackId}/updateDbCp?id=${cp.id}`, {
+              method: "PUT"
+            }).catch(err => console.error("Failed to update checkpoint:", err));
           }
+          
         });
       })
       .catch(err => {
