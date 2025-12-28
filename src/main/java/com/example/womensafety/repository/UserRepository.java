@@ -9,5 +9,5 @@ import com.example.womensafety.entity.Users;
 @Repository
 public interface UserRepository extends JpaRepository<Users, Long>{
     Users findByUname(String uname);
-    Users findByUnameUpassword(String uname,String upassword);
+    Users findByUnameAndUpassword(String uname,String upassword);
 }

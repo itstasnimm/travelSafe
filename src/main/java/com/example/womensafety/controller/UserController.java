@@ -46,7 +46,7 @@ public class UserController{
                 return "userEnter";
             }
         }else{
-            Users u3= userRepository.findByUnameUpassword(uname,upassword);
+            Users u3= userRepository.findByUnameAndUpassword(uname,upassword);
             if(u3==null){
                 model.addAttribute("error", "Invalid Login attemp");
                 return "userEnter";
