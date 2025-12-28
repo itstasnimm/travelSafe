@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>New Journey or Existing?</title>
+
+    <script th:inline="javascript">
+        document.addEventListener("DOMContentLoaded", function () {
+            // const uid = [[${usero.uid}]];
+        fetch(`/existing`, {
+                method: "GET"
+            }).catch(err => console.error("Failed to get journeys:", err));
+        });
+    </script>
+</head>
+
+<body>
+
+<!-- Use Existing Journey -->
+<form method="get" action="/existingJourney">
+    <label>Use Existing Journey</label><br>
+    <input type="text" name="jid" placeholder="Journey Id" required>
+    <br><br>
+    <button type="submit">Continue Journey</button>
+</form>
+
+<br><br>
+
+<!-- Create New Journey -->
+<form method="get" action="/journey/form">
+    <button type="submit">Create New Journey</button>
+</form>
+
+</body>
+</html>

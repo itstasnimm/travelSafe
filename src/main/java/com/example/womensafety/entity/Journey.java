@@ -1,6 +1,9 @@
 package com.example.womensafety.entity;
 
+// import com.example.womensafety.entity.Users;
+
 import jakarta.persistence.*;
+
 import java.util.*;
 
 @Entity
@@ -30,6 +33,10 @@ public class Journey {
      @OneToMany(mappedBy = "journey", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Checkpoint> checkpoints = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "uid", nullable = false)
+    private Users user;
+
     // Getters & Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -57,8 +64,15 @@ public class Journey {
         }
     }
 
-    public List<Checkpoint> getCheckpointList() {
-        return checkpoints == null ? List.of() : checkpoints;
+    // public List<Checkpoint> getCheckpointList() {
+    //     return checkpoints == null ? List.of() : checkpoints;
+    // }
+
+    public Users getUser() {
+        return user;
+    }
+    public void setUser(Users user) {
+        this.user = user;
     }
 
 }

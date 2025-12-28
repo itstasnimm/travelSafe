@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Enter</title>
+</head>
+<body>
+<p th:if="${error}" style="color:red; font-weight:bold;">
+    [[${error}]]
+</p>
+
+<h2>Please enter your username and password</h2>
+<h5>New username-password will be created if you select New User</h5>
+
+<form method="post" action="/entryNoEntry">
+
+    <label>Username:</label>
+    <input type="text" name="uname" id="uname" required>
+    <br>
+
+    <label>Password:</label>
+    <input type="password" name="upassword" id="upassword" required>
+    <br>
+
+    <label>
+        Select if New User:
+        <input type="radio" name="urb" value="true">
+    </label>
+
+    <br><br>
+
+    <button type="submit">Enter</button>
+
+</form>
+
+</body>
+</html>

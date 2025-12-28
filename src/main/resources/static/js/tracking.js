@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
           if (statusEl.textContent.trim() === "Reached ✅") return; 
 
           var dist = distanceInMeters(userLat, userLng, cp.lat, cp.lng);
-          if (dist < 300) {
+          if (dist < 250) {
             statusEl.textContent = "Reached ✅";
             fetch(`/journey/track/${trackId}/updateDbCp?id=${cp.id}`, {
               method: "PUT"
