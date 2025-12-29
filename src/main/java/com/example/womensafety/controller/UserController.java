@@ -48,13 +48,22 @@ public class UserController{
         }else{
             Users u3= userRepository.findByUnameAndUpassword(uname,upassword);
             if(u3==null){
-                model.addAttribute("error", "Invalid Login attemp");
+                model.addAttribute("error", "Invalid Login attempt");
                 return "userEnter";
             }
             session.setAttribute("uid", u3.getUid());
         }
 
         return "redirect:/chooseJourney";
+    }
+
+    @GetMapping("/chooseJourney")
+    public String chooseJourney(HttpSession session, Model model){
+        if(session.getAttribute("uid")==null){
+            model.addAttribute("error", "Only logged in users can create journey");
+            return "userEnter";
+        }
+        return "chooseJourney";
     }
 
     // public List<Journey> getExisting(@RequestParam("uid") Long u){
@@ -67,12 +76,14 @@ public class UserController{
     }
 
      @GetMapping("/existingJourney")
-    public String updateExisting(@RequestParam("jid") Long j){
+    public String updateExisting(@RequestParam("jid") Long j,Model model){
         Optional<Journey> j1= journeyRepository.findById(j);
         Journey j2 = j1.orElse(null);
         j2.setTrackId(UUID.randomUUID().toString());
-
-        return "";
+        Journey updated = journeyRepository.save(j2);
+        model.addAttribute("journey", updated);
+        model.addAttribute("trackLink", "/journey/track/" + updated.getTrackId());
+        return "journey/livetracking";
     }
 
 }
