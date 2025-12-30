@@ -5,7 +5,7 @@
 
     <script th:inline="javascript">
         document.addEventListener("DOMContentLoaded", function () {
-            // const uid = [[${usero.uid}]];
+         
         fetch(`/existing`, {
                 method: "GET"
             }).catch(err => console.error("Failed to get journeys:", err));
