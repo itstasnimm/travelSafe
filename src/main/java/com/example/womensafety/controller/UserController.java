@@ -1,5 +1,6 @@
 package com.example.womensafety.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -72,7 +73,7 @@ public class UserController{
         Long uid= (Long) session.getAttribute("uid");
         Optional<Users> u1= userRepository.findById(uid);
         Users u2 = u1.orElse(null);
-        return u2.getJourneys();
+        return u2==null?new ArrayList<>():u2.getJourneys();
     }
 
      @GetMapping("/existingJourney")
